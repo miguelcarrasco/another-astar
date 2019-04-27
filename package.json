@@ -1,0 +1,12 @@
+{
+  "name": "a-star",
+  "version": "1.0.0",
+  "description": "An A* algorithm simple library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Miguel Angel Carrasco Wens",
+  "license": "MIT"
+}
