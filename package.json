@@ -2,11 +2,15 @@
   "name": "a-star",
   "version": "1.0.0",
   "description": "An A* algorithm simple library",
-  "main": "index.js",
+  "main": "src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [],
   "author": "Miguel Angel Carrasco Wens",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4"
+  }
 }
