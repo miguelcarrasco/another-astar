@@ -1,6 +1,5 @@
 var utils = require('./utils');
 
-
 module.exports = {
     findPath: function (start, goal, heuristicCostEstimate, getNodeIndex, getNeighbors, getDistance) {
         var startIndex = getNodeIndex(start);
@@ -10,8 +9,9 @@ module.exports = {
         nodesMap[startIndex] = start;
         nodesMap[goalIndex] = goal;
 
-        var closedSet = [];
-        var openSet = [startIndex];
+        var closedSet = new Set([]);
+        var openSet = new Set([startIndex]);
+
         var cameFrom = {};
         var gScore = {};
         gScore[startIndex] = 0;
@@ -19,34 +19,29 @@ module.exports = {
         var fScore = {};
         fScore[startIndex] = heuristicCostEstimate(start);
 
-        var counter = 0;
-
-        while (openSet.length > 0) {
-            counter++;
-
-            var currentNodeIndex = utils.getMinElementKey(utils.filterByKeys(fScore, openSet));
+        while (openSet.size > 0) {
+            var openSetFScores = utils.filterByKeys(fScore, Array.from(openSet));
+            var currentNodeIndex = utils.getMinElementKey(openSetFScores);
 
             if (currentNodeIndex === goalIndex) {
                 return utils.getObjectsPath(cameFrom, currentNodeIndex, nodesMap);
             }
 
-            utils.arrayRemove(openSet, currentNodeIndex);
+            openSet.delete(currentNodeIndex);
 
-            closedSet.push(currentNodeIndex);
+            closedSet.add(currentNodeIndex);
 
             var neighbors = getNeighbors(nodesMap[currentNodeIndex]);
             for (var i = 0; i < neighbors.length; i++) {
                 var currentNeighborIndex = getNodeIndex(neighbors[i]);
                 nodesMap[currentNeighborIndex] = neighbors[i];
 
-                if (typeof closedSet[currentNeighborIndex] !== 'undefined') {
-                    continue;
-                }
+                if (closedSet.has(currentNeighborIndex)) continue;
 
                 var tentativeGScore = gScore[currentNodeIndex] + getDistance(nodesMap[currentNodeIndex], neighbors[i]);
 
-                if (typeof openSet[currentNeighborIndex] === 'undefined') {
-                    openSet.push(currentNeighborIndex);
+                if (!openSet.has(currentNeighborIndex)) {
+                    openSet.add(currentNeighborIndex);
                 } else if (typeof gScore[currentNeighborIndex] !== 'undefined'
                     && tentativeGScore >= gScore[currentNeighborIndex]) {
                     continue;

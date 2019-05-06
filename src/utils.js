@@ -43,11 +43,5 @@ module.exports = {
         return this.reconstructPath(cameFrom, nodeIndex).map(function (index) {
             return nodesMap[index];
         });
-    },
-    arrayRemove: function (array, element) {
-        var index = array.indexOf(element);
-        if (index > -1) {
-            array.splice(index, 1);
-        }
     }
 };

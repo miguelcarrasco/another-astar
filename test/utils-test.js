@@ -10,7 +10,7 @@ describe('Astar utils tests', function () {
     });
 
     describe('filter object by keys', function () {
-        it('should objects by keys', function () {
+        it('should filter objects by keys', function () {
             expect(utils.filterByKeys({"a": 5, "b": 3, "c": 2}, ["a", "c", "f"])).to.eql({"a": 5, "c": 2});
         });
     });
@@ -46,14 +46,6 @@ describe('Astar utils tests', function () {
 
         it('should get objects path', function () {
             expect(utils.getObjectsPath(cameFrom, "d", nodesMap)).to.eql(["A", "B", "C", "D"]);
-        });
-    });
-
-    describe('array remove', function () {
-        it('should remove element of array', function () {
-            var array = ["a", "b", "c"];
-            utils.arrayRemove(array, "b");
-            expect(array).to.eql(["a", "c"]);
         });
     });
 });
