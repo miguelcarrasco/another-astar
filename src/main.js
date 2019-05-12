@@ -1,13 +1,14 @@
 var utils = require('./utils');
 
 module.exports = {
-    findPath: function (start, goal, heuristicCostEstimate, getNodeIndex, getNeighbors, getDistance) {
-        var startIndex = getNodeIndex(start);
-        var goalIndex = getNodeIndex(goal);
+    findPath: function (astarImpl) {
+
+        var startIndex = astarImpl.getNodeIndex(astarImpl.start);
+        var goalIndex = astarImpl.getNodeIndex(astarImpl.goal);
 
         var nodesMap = {};
-        nodesMap[startIndex] = start;
-        nodesMap[goalIndex] = goal;
+        nodesMap[startIndex] = astarImpl.start;
+        nodesMap[goalIndex] = astarImpl.goal;
 
         var closedSet = new Set([]);
         var openSet = new Set([startIndex]);
@@ -17,7 +18,7 @@ module.exports = {
         gScore[startIndex] = 0;
 
         var fScore = {};
-        fScore[startIndex] = heuristicCostEstimate(start);
+        fScore[startIndex] = astarImpl.heuristicCostEstimate(astarImpl.start);
 
         while (openSet.size > 0) {
             var openSetFScores = utils.filterByKeys(fScore, Array.from(openSet));
@@ -31,14 +32,15 @@ module.exports = {
 
             closedSet.add(currentNodeIndex);
 
-            var neighbors = getNeighbors(nodesMap[currentNodeIndex]);
+            var neighbors = astarImpl.getNeighbors(nodesMap[currentNodeIndex]);
             for (var i = 0; i < neighbors.length; i++) {
-                var currentNeighborIndex = getNodeIndex(neighbors[i]);
+                var currentNeighborIndex = astarImpl.getNodeIndex(neighbors[i]);
                 nodesMap[currentNeighborIndex] = neighbors[i];
 
                 if (closedSet.has(currentNeighborIndex)) continue;
 
-                var tentativeGScore = gScore[currentNodeIndex] + getDistance(nodesMap[currentNodeIndex], neighbors[i]);
+                var tentativeGScore = gScore[currentNodeIndex] + astarImpl.getDistance(nodesMap[currentNodeIndex],
+                    neighbors[i]);
 
                 if (!openSet.has(currentNeighborIndex)) {
                     openSet.add(currentNeighborIndex);
@@ -50,7 +52,7 @@ module.exports = {
                 cameFrom[currentNeighborIndex] = currentNodeIndex;
                 gScore[currentNeighborIndex] = tentativeGScore;
                 fScore[currentNeighborIndex] = gScore[currentNeighborIndex] +
-                    heuristicCostEstimate(nodesMap[currentNeighborIndex]);
+                    astarImpl.heuristicCostEstimate(nodesMap[currentNeighborIndex]);
             }
         }
     }
