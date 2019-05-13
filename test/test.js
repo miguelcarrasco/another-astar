@@ -111,22 +111,29 @@ describe('Astar algorithm', function () {
                 }
             };
 
-            var path = astar.findPath({
-                    start: "a",
-                    goal: "n",
-                    heuristicCostEstimate: function (node) {
-                        return graphNodes[node]["heuristicCost"];
-                    },
-                    getNodeIndex: function (node) {
-                        return node;
-                    },
-                    getNeighbors: function (node) {
-                        return Object.keys(graphNodes[node]["neighbors"]);
-                    },
-                    getDistance: function (node1, node2) {
-                        return graphNodes[node1]["neighbors"][node2];
-                    }
+            var astarImpl = {
+                start: "a",
+                goal: "n",
+                heuristicCostEstimate: function (node) {
+                    return graphNodes[node]["heuristicCost"];
+                },
+                getNodeIndex: function (node) {
+                    return node;
+                },
+                getNeighbors: function (node) {
+                    return Object.keys(graphNodes[node]["neighbors"]);
+                },
+                getDistance: function (node1, node2) {
+                    return graphNodes[node1]["neighbors"][node2];
                 }
+            };
+
+            var path = astar.findPathAstar(astarImpl
+            );
+
+            expect(path).to.eql(["a", "b", "c", "d", "h", "j", "k", "l", "n"]);
+
+            path = astar.findPathIDAstar(astarImpl
             );
 
             expect(path).to.eql(["a", "b", "c", "d", "h", "j", "k", "l", "n"]);
@@ -223,22 +230,28 @@ describe('Astar algorithm', function () {
                 }
             };
 
-            var path = astar.findPath({
-                    start: "a",
-                    goal: "n",
-                    heuristicCostEstimate: function (node) {
-                        return graphNodes[node]["heuristicCost"];
-                    },
-                    getNodeIndex: function (node) {
-                        return node;
-                    },
-                    getNeighbors: function (node) {
-                        return Object.keys(graphNodes[node]["neighbors"]);
-                    },
-                    getDistance: function (node1, node2) {
-                        return graphNodes[node1]["neighbors"][node2];
-                    }
+            var astarImpl = {
+                start: "a",
+                goal: "n",
+                heuristicCostEstimate: function (node) {
+                    return graphNodes[node]["heuristicCost"];
+                },
+                getNodeIndex: function (node) {
+                    return node;
+                },
+                getNeighbors: function (node) {
+                    return Object.keys(graphNodes[node]["neighbors"]);
+                },
+                getDistance: function (node1, node2) {
+                    return graphNodes[node1]["neighbors"][node2];
                 }
+            };
+            var path = astar.findPathAstar(astarImpl
+            );
+
+            expect(path).to.eql(["a", "b", "c", "d", "h", "j", "k", "l", "n"]);
+
+            var path = astar.findPathIDAstar(astarImpl
             );
 
             expect(path).to.eql(["a", "b", "c", "d", "h", "j", "k", "l", "n"]);

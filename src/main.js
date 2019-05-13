@@ -1,8 +1,86 @@
 var utils = require('./utils');
 
 module.exports = {
-    findPath: function (astarImpl) {
 
+    findPathIDAstar: function (astarImpl) {
+        var bound = astarImpl.heuristicCostEstimate(astarImpl.start);
+        var startIndex = astarImpl.getNodeIndex(astarImpl.start);
+        var goalIndex = astarImpl.getNodeIndex(astarImpl.goal);
+        var pathIndexes = [startIndex];
+        var nodesMap = {};
+        nodesMap[startIndex] = astarImpl.start;
+        nodesMap[goalIndex] = astarImpl.goal;
+
+        var search = function (pathIndexes, gScore, bound) {
+            var currentNode = pathIndexes[pathIndexes.length - 1];
+            var currentFScore = gScore + astarImpl.heuristicCostEstimate(currentNode);
+            if (currentFScore > bound) {
+                return {
+                    "isGoalFound": false,
+                    "isGoalNotFound": false,
+                    "minScore": currentFScore
+                }
+            }
+            if (astarImpl.getNodeIndex(currentNode) === astarImpl.getNodeIndex(astarImpl.goal)) {
+                return {
+                    "isGoalFound": true,
+                    "isGoalNotFound": false,
+                    "minScore": currentFScore
+                }
+            }
+
+            var minScore = null;
+            var neighbors = astarImpl.getNeighbors(currentNode);
+            for (var i = 0; i < neighbors.length; i++) {
+                var currentNeighbor = neighbors[i];
+                var currentNeighborIndex = astarImpl.getNodeIndex(currentNeighbor);
+                nodesMap[currentNeighborIndex] = currentNeighbor;
+
+                if (pathIndexes.indexOf(currentNeighborIndex) === -1) {
+                    pathIndexes.push(currentNeighborIndex);
+                    var result = search(pathIndexes, gScore
+                        + astarImpl.getDistance(currentNode, currentNeighbor), bound);
+
+                    if (result.isGoalFound) {
+                        return {
+                            "isGoalFound": true,
+                            "isGoalNotFound": false,
+                            "minScore": result.minScore
+                        }
+                    }
+
+                    if (minScore == null || result.minScore < minScore) {
+                        minScore = result.minScore;
+                    }
+                    pathIndexes.pop();
+                }
+            }
+            return {
+                "isGoalFound": false,
+                "isGoalNotFound": false,
+                "minScore": minScore
+            }
+        };
+
+        while (true) {
+            var result = search(pathIndexes, 0, bound);
+            if (result.isGoalFound) {
+                var path = [];
+                for (var i = 0; i < pathIndexes.length; i++) {
+                    path.push(nodesMap[pathIndexes[i]]);
+                }
+                return path;
+            }
+            if (result.isGoalNotFound) {
+                return null;
+            }
+            bound = result.minScore;
+        }
+
+
+    },
+
+    findPathAstar: function (astarImpl) {
         var startIndex = astarImpl.getNodeIndex(astarImpl.start);
         var goalIndex = astarImpl.getNodeIndex(astarImpl.goal);
 
@@ -56,4 +134,5 @@ module.exports = {
             }
         }
     }
+
 };
