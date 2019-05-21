@@ -10,9 +10,11 @@ let nPuzzleUtils = {
         let manhatanSum = 0;
         for (let i = 0; i < origin.length; i++) {
             let currentValue = origin[i];
-            let finalPosition = goal.indexOf(currentValue);
-            manhatanSum += this.calculateManhattanDistance(i % baseSize, Math.floor(i / baseSize,),
-                finalPosition % baseSize, Math.floor(finalPosition / baseSize));
+            if (currentValue !== 0) {
+                let finalPosition = goal.indexOf(currentValue);
+                manhatanSum += this.calculateManhattanDistance(i % baseSize, Math.floor(i / baseSize),
+                    finalPosition % baseSize, Math.floor(finalPosition / baseSize));
+            }
         }
         return manhatanSum;
     },
@@ -107,7 +109,6 @@ describe('n-puzzle tests', function () {
             ], 3)).to.eq(6);
 
         });
-
 
         it('should generate neighbors from blank space in central position', function () {
             expect(nPuzzleUtils.getNeighbors([
@@ -373,13 +374,11 @@ describe('n-puzzle tests', function () {
                     7, 8, 0,
                 ]
             ]);
-
         });
     });
 
-
     describe('optimal paths on an easy 15-puzzle', function () {
-        it('should find the optimal path on a easy 15-puzzle', function () {
+        it('should find the optimal path on an easy 15-puzzle', function () {
             let start = [
                 1, 2, 3, 4,
                 5, 6, 7, 8,

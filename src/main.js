@@ -30,7 +30,8 @@ module.exports = {
             }
 
             let minScore = null;
-            let neighbors = getNeighbors(currentNode);
+            let neighbors = getNeighbors(nodesMap[currentNode]);
+
             for (let i = 0; i < neighbors.length; i++) {
                 let currentNeighbor = neighbors[i];
                 let currentNeighborIndex = getNodeIndex(currentNeighbor);
