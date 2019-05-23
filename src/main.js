@@ -2,7 +2,8 @@ let utils = require('./utils');
 
 module.exports = {
 
-    findPathIDAstar: function ({start, goal, heuristicCostEstimate, getNodeIndex, getNeighbors, getDistance}) {
+    findPathIDAstar: function ({start, goal, heuristicCostEstimate,
+                                   getNodeIndex, getNeighbors, getDistance, onNodeVisited}) {
         let bound = heuristicCostEstimate(start);
         let startIndex = getNodeIndex(start);
         let goalIndex = getNodeIndex(goal);
@@ -12,8 +13,11 @@ module.exports = {
         nodesMap[goalIndex] = goal;
 
         let search = function (pathIndexes, gScore, bound) {
-            let currentNode = pathIndexes[pathIndexes.length - 1];
-            let currentFScore = gScore + heuristicCostEstimate(currentNode);
+            let currentNodeIndex = pathIndexes[pathIndexes.length - 1];
+            if(onNodeVisited instanceof Function){
+                onNodeVisited(nodesMap[currentNodeIndex]);
+            }
+            let currentFScore = gScore + heuristicCostEstimate(nodesMap[currentNodeIndex]);
             if (currentFScore > bound) {
                 return {
                     "isGoalFound": false,
@@ -21,7 +25,7 @@ module.exports = {
                     "minScore": currentFScore
                 }
             }
-            if (getNodeIndex(currentNode) === getNodeIndex(goal)) {
+            if (currentNodeIndex === getNodeIndex(goal)) {
                 return {
                     "isGoalFound": true,
                     "isGoalNotFound": false,
@@ -30,7 +34,7 @@ module.exports = {
             }
 
             let minScore = null;
-            let neighbors = getNeighbors(nodesMap[currentNode]);
+            let neighbors = getNeighbors(nodesMap[currentNodeIndex]);
 
             for (let i = 0; i < neighbors.length; i++) {
                 let currentNeighbor = neighbors[i];
@@ -40,7 +44,7 @@ module.exports = {
                 if (pathIndexes.indexOf(currentNeighborIndex) === -1) {
                     pathIndexes.push(currentNeighborIndex);
                     let result = search(pathIndexes, gScore
-                        + getDistance(currentNode, currentNeighbor), bound);
+                        + getDistance(currentNodeIndex, currentNeighbor), bound);
 
                     if (result.isGoalFound) {
                         return {
@@ -81,7 +85,8 @@ module.exports = {
 
     },
 
-    findPathAstar: function ({start, goal, heuristicCostEstimate, getNodeIndex, getNeighbors, getDistance}) {
+    findPathAstar: function ({start, goal, heuristicCostEstimate,
+                                 getNodeIndex, getNeighbors, getDistance, onNodeVisited}) {
         let startIndex = getNodeIndex(start);
         let goalIndex = getNodeIndex(goal);
 
@@ -102,6 +107,9 @@ module.exports = {
         while (openSet.size > 0) {
             let openSetFScores = utils.filterByKeys(fScore, Array.from(openSet));
             let currentNodeIndex = utils.getMinElementKey(openSetFScores);
+            if(onNodeVisited instanceof Function){
+                onNodeVisited(nodesMap[currentNodeIndex]);
+            }
 
             if (currentNodeIndex === goalIndex) {
                 return utils.getObjectsPath(cameFrom, currentNodeIndex, nodesMap);

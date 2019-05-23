@@ -4,7 +4,7 @@
   "description": "An A* algorithm simple library",
   "main": "src/main.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --timeout 15000"
   },
   "keywords": [],
   "author": "Miguel Angel Carrasco Wens",
