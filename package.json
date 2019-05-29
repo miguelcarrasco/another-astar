@@ -1,14 +1,29 @@
 {
   "name": "Another-astar",
   "version": "0.1.0",
-  "description": "Yet another library with implementations of A* and IDA* algorithms",
+  "description": "Yet another javascript library with implementations of A* and IDA* algorithms.",
   "main": "src/main.js",
   "scripts": {
     "test": "mocha --timeout 15000"
   },
-  "keywords": [],
-  "author": "Miguel Angel Carrasco Wens",
-  "license": "MIT",
+  "keywords": [
+    "A*",
+    "IDA*",
+    "a-star",
+    "ida-star",
+    "dijkstra",
+    "iterative deepening",
+    "shortest path",
+    "graph traversal",
+    "depth-first search"
+  ],
+  "author": "Miguel Angel Carrasco Wens <tlacaelel.software@gmail.com>",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/brentertz/scapegoat/blob/master/LICENSE-MIT"
+    }
+  ],
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.1.4"
