@@ -1,7 +1,7 @@
 {
-  "name": "a-star",
-  "version": "1.0.0",
-  "description": "An A* algorithm simple library",
+  "name": "Another-astar",
+  "version": "0.1.0",
+  "description": "Yet another library with implementations of A* and IDA* algorithms",
   "main": "src/main.js",
   "scripts": {
     "test": "mocha --timeout 15000"
