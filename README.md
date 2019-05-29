@@ -2,8 +2,9 @@
 Yet another javascript library with implementations of A* and IDA* algorithms.
 
 ## Usage
-
+```console
 npm install git://github.com/miguelcarrasco/another-astar.git#0.1.0
+```
 
 Use findPathAstar method to get a path from start to goal using A* algorithm, it will return
 an optimal path if the heuristic cost estimate is admissible for every evaluated node.
