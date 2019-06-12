@@ -44,14 +44,10 @@ module.exports = {
                 if (pathIndexes.indexOf(currentNeighborIndex) === -1) {
                     pathIndexes.push(currentNeighborIndex);
                     let result = search(pathIndexes, gScore
-                        + getDistance(currentNodeIndex, currentNeighbor), bound);
+                        + getDistance(nodesMap[currentNodeIndex], currentNeighbor), bound);
 
                     if (result.isGoalFound) {
-                        return {
-                            "isGoalFound": true,
-                            "isGoalNotFound": false,
-                            "minScore": result.minScore
-                        }
+                        return result;
                     }
 
                     if (minScore == null || result.minScore < minScore) {
